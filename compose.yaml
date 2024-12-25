@@ -1,34 +1,35 @@
-version: "3.9"
+version: '3.8'
 services:
-  postgres:
-    container_name: postgres_container_rules
-    image: postgres:14
-    environment:
-      POSTGRES_DB: "rules"
-      POSTGRES_USER: "abcdef"
-      POSTGRES_PASSWORD: "abcdef"
-      PGDATA: "/var/lib/postgresql/data/pgdata"
-    volumes:
-      - ../2. Init Database:/docker-entrypoint-initdb.d
-      - .:/var/lib/postgresql/data
+  rules:
+    image: revizor_rules_back:1.0
     ports:
-      - "6444:5432"
-    
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U abcdef -d rules"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 10s
-    restart: unless-stopped
-    deploy:
-      resources:
-        limits:
-          cpus: '1'
-          memory: 4G
+      - "8787:8787"
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USER=user
+      - DB_PASSWORD=password
+      - DB_NAME=postgres
+      - SERVE_PORT=8787
     networks:
-      - postgres
+      - rules_network
+    depends_on:
+      - db
+  db:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - rules_network
+    ports:
+      - "5432:5432"
 
+volumes:
+  postgres_data:
 networks:
-  postgres:
+  rules_network:
     driver: bridge

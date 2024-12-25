@@ -29,15 +29,9 @@ func (s *Service) CreateRule(ctx context.Context, rule *models.Rule) (*models.Ru
 	return created, nil
 }
 
-type UpdateRuleInput struct {
-	Id            uuid.UUID
-}
-
 // @throws: ErrRuleNotFound, ErrRuleExists
-func (s *Service) UpdateRule(ctx context.Context, input *UpdateRuleInput) (*models.Rule, error) {
-	rule, err := s.storage.UpdateRule(ctx, &models.Rule{
-		Id:            input.Id,
-	})
+func (s *Service) UpdateRule(ctx context.Context, rule *models.Rule) (*models.Rule, error) {
+	rule, err := s.storage.UpdateRule(ctx, rule)
 	if err != nil {
 		return nil, err
 	}
@@ -78,7 +72,6 @@ func (s *Service) GetRuleById(ctx context.Context, ruleId uuid.UUID) (*models.Ru
 	return rule, nil
 
 }
-
 
 type GetAllRulesOutput struct {
 	Rules []*models.Rule

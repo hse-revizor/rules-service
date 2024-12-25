@@ -1,0 +1,117 @@
+basePath: /api/v1
+definitions:
+  RuleCreate:
+    properties:
+      filePath:
+        type: string
+      item:
+        type: string
+      shouldBe:
+        type: string
+      type:
+        type: string
+      workspaceId:
+        type: string
+    type: object
+  RuleUpdate:
+    properties:
+      filePath:
+        type: string
+      id:
+        type: string
+      item:
+        type: string
+      shouldBe:
+        type: string
+      type:
+        type: string
+      workspaceId:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: This is a Swagger documentation.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Rules Service API
+  version: "1.0"
+paths:
+  /rules:
+    delete:
+      description: In success case returns deleted rule model
+      parameters:
+      - description: Rule id input
+        in: query
+        name: ruleId
+        required: true
+        type: string
+      responses:
+        "200":
+          description: ' '
+      summary: Delete rule
+      tags:
+      - Rule
+    get:
+      parameters:
+      - description: Rule id input
+        in: query
+        name: ruleId
+        required: true
+        type: string
+      responses:
+        "200":
+          description: ' '
+    post:
+      consumes:
+      - application/json
+      description: In success case returns created rule model
+      parameters:
+      - description: Rule input
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/RuleCreate'
+      responses:
+        "200":
+          description: ' '
+      summary: Create rule
+      tags:
+      - Rule
+    put:
+      consumes:
+      - application/json
+      description: In success case returns updated rule model
+      parameters:
+      - description: Rule input
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/RuleUpdate'
+      responses:
+        "200":
+          description: ' '
+      summary: Update rule
+      tags:
+      - Rule
+  /rules/all:
+    get:
+      parameters:
+      - description: Take
+        in: query
+        name: take
+        required: true
+        type: integer
+      - description: Skip
+        in: query
+        name: skip
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: ' '
+swagger: "2.0"

@@ -1,0 +1,179 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a Swagger documentation.",
+        "title": "Rules Service API",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {},
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/api/v1",
+    "paths": {
+        "/rules": {
+            "get": {
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Rule id input",
+                        "name": "ruleId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": " "
+                    }
+                }
+            },
+            "put": {
+                "description": "In success case returns updated rule model",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Rule"
+                ],
+                "summary": "Update rule",
+                "parameters": [
+                    {
+                        "description": "Rule input",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/RuleUpdate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": " "
+                    }
+                }
+            },
+            "post": {
+                "description": "In success case returns created rule model",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Rule"
+                ],
+                "summary": "Create rule",
+                "parameters": [
+                    {
+                        "description": "Rule input",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/RuleCreate"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": " "
+                    }
+                }
+            },
+            "delete": {
+                "description": "In success case returns deleted rule model",
+                "tags": [
+                    "Rule"
+                ],
+                "summary": "Delete rule",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Rule id input",
+                        "name": "ruleId",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": " "
+                    }
+                }
+            }
+        },
+        "/rules/all": {
+            "get": {
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Take",
+                        "name": "take",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Skip",
+                        "name": "skip",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": " "
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "RuleCreate": {
+            "type": "object",
+            "properties": {
+                "filePath": {
+                    "type": "string"
+                },
+                "item": {
+                    "type": "string"
+                },
+                "shouldBe": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "workspaceId": {
+                    "type": "string"
+                }
+            }
+        },
+        "RuleUpdate": {
+            "type": "object",
+            "properties": {
+                "filePath": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "item": {
+                    "type": "string"
+                },
+                "shouldBe": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "workspaceId": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
