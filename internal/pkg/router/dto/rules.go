@@ -1,32 +1,25 @@
 package dto
 
-type Rule struct {
-	Id          string `json:"id"`
-	FilePath    string `json:"filePath"`
-	Item        string `json:"item"`
-	ShouldBe    string `json:"shouldBe"`
-	Type        string `json:"type"`
-	WorkspaceId string `json:"workspaceId"`
-} // @name Rule
+type GetRuleDto struct {
+    ID         string `json:"id"`
+    TemplateID string `json:"templateId"`
+    ApplyToURI string `json:"applyToURI"`
+    Value      string `json:"value"`
+}
 
-type RuleList struct {
-	Rules []Rule `json:"rules"`
-	Count int    `json:"count"`
-} // @name RuleList
+type CreateRuleDto struct {
+    TemplateID string `json:"templateId" binding:"required"`
+    ApplyToURI string `json:"applyToURI" binding:"required"`
+    Value      string `json:"value" binding:"required"`
+}
 
-type RuleCreate struct {
-	FilePath    string `json:"filePath"`
-	Item        string `json:"item"`
-	ShouldBe    string `json:"shouldBe"`
-	Type        string `json:"type"`
-	WorkspaceId string `json:"workspaceId"`
-} // @name RuleCreate
+type GetPolicyDto struct {
+    ID        string   `json:"id"`
+    ProjectID string   `json:"projectId"`
+    RulesIDs  []string `json:"rulesIds"`
+}
 
-type RuleUpdate struct {
-	Id          string `json:"id"`
-	FilePath    string `json:"filePath"`
-	Item        string `json:"item"`
-	ShouldBe    string `json:"shouldBe"`
-	Type        string `json:"type"`
-	WorkspaceId string `json:"workspaceId"`
-} // @name RuleUpdate
+type CreatePolicyDto struct {
+    ProjectID string   `json:"projectId" binding:"required"`
+    RulesIDs  []string `json:"rulesIds" binding:"required"`
+}
