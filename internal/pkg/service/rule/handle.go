@@ -24,7 +24,7 @@ func (s *Service) CreateRule(ctx context.Context, input *CreateRule) (*models.Ru
 		Value:        input.Value,
 		RuleTemplate: models.RuleTemplate(input.Template),
 
-		RuleGroup: models.RuleGroup{},
+		// RuleGroup: models.RuleGroup{},
 	})
 	if err != nil {
 		switch {
