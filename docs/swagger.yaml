@@ -1,32 +1,37 @@
 basePath: /api/v1
 definitions:
-  RuleCreate:
+  github_com_hse-revizor_rules-service_internal_pkg_router_dto.CreatePolicyDto:
     properties:
-      filePath:
+      projectId:
         type: string
-      item:
-        type: string
-      shouldBe:
-        type: string
-      type:
-        type: string
-      workspaceId:
-        type: string
+      rulesIds:
+        items:
+          type: string
+        type: array
+    required:
+    - projectId
+    - rulesIds
     type: object
-  RuleUpdate:
+  github_com_hse-revizor_rules-service_internal_pkg_router_dto.CreateRuleDto:
     properties:
-      filePath:
+      params:
         type: string
+      typeId:
+        type: string
+    required:
+    - params
+    - typeId
+    type: object
+  github_com_hse-revizor_rules-service_internal_pkg_router_dto.GetPolicyDto:
+    properties:
       id:
         type: string
-      item:
+      projectId:
         type: string
-      shouldBe:
-        type: string
-      type:
-        type: string
-      workspaceId:
-        type: string
+      rulesIds:
+        items:
+          type: string
+        type: array
     type: object
 host: localhost:8080
 info:
@@ -39,79 +44,106 @@ info:
   title: Rules Service API
   version: "1.0"
 paths:
-  /rules:
-    delete:
-      description: In success case returns deleted rule model
-      parameters:
-      - description: Rule id input
-        in: query
-        name: ruleId
-        required: true
-        type: string
-      responses:
-        "200":
-          description: ' '
-      summary: Delete rule
-      tags:
-      - Rule
-    get:
-      parameters:
-      - description: Rule id input
-        in: query
-        name: ruleId
-        required: true
-        type: string
-      responses:
-        "200":
-          description: ' '
+  /policy:
     post:
       consumes:
       - application/json
-      description: In success case returns created rule model
+      description: Creates a new policy for applying rules to a project
+      parameters:
+      - description: Policy input
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_hse-revizor_rules-service_internal_pkg_router_dto.CreatePolicyDto'
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/github_com_hse-revizor_rules-service_internal_pkg_router_dto.GetPolicyDto'
+      summary: Create policy
+      tags:
+      - Policy
+  /policy/{id}:
+    delete:
+      description: Deletes policy with provided id
+      parameters:
+      - description: Policy id
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_hse-revizor_rules-service_internal_pkg_router_dto.GetPolicyDto'
+      summary: Delete policy by id
+      tags:
+      - Policy
+    get:
+      description: Returns policy model with provided id
+      parameters:
+      - description: Policy id
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_hse-revizor_rules-service_internal_pkg_router_dto.GetPolicyDto'
+      summary: Get policy by id
+      tags:
+      - Policy
+  /rule/{id}:
+    delete:
+      description: In success case delete rule model with provided id
+      parameters:
+      - description: Rule id input
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: ' '
+      summary: Delete rule by id
+      tags:
+      - Rule
+    get:
+      description: In success case returns rule model with provided id
+      parameters:
+      - description: Rule id input
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: ' '
+      summary: Get rule by id
+      tags:
+      - Rule
+  /rules:
+    post:
+      consumes:
+      - application/json
+      description: In success case returns created rule model. Type must be equal
+        (HasFile, HasStringInFile, HasExpectedValueInField, StrictEquality, HasSubstring,
+        HasRegexMatch, NoSubstring, NotLongerThan, NotShorterThan, NotEmpty, DoesLLMSayThatRuleIsSatisfied)
       parameters:
       - description: Rule input
         in: body
         name: data
         required: true
         schema:
-          $ref: '#/definitions/RuleCreate'
+          $ref: '#/definitions/github_com_hse-revizor_rules-service_internal_pkg_router_dto.CreateRuleDto'
       responses:
-        "200":
+        "201":
           description: ' '
       summary: Create rule
       tags:
       - Rule
-    put:
-      consumes:
-      - application/json
-      description: In success case returns updated rule model
-      parameters:
-      - description: Rule input
-        in: body
-        name: data
-        required: true
-        schema:
-          $ref: '#/definitions/RuleUpdate'
-      responses:
-        "200":
-          description: ' '
-      summary: Update rule
-      tags:
-      - Rule
-  /rules/all:
-    get:
-      parameters:
-      - description: Take
-        in: query
-        name: take
-        required: true
-        type: integer
-      - description: Skip
-        in: query
-        name: skip
-        required: true
-        type: integer
-      responses:
-        "200":
-          description: ' '
 swagger: "2.0"

@@ -20,14 +20,100 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/rules": {
+        "/policy": {
+            "post": {
+                "description": "Creates a new policy for applying rules to a project",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Policy"
+                ],
+                "summary": "Create policy",
+                "parameters": [
+                    {
+                        "description": "Policy input",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hse-revizor_rules-service_internal_pkg_router_dto.CreatePolicyDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hse-revizor_rules-service_internal_pkg_router_dto.GetPolicyDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/policy/{id}": {
             "get": {
+                "description": "Returns policy model with provided id",
+                "tags": [
+                    "Policy"
+                ],
+                "summary": "Get policy by id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Policy id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hse-revizor_rules-service_internal_pkg_router_dto.GetPolicyDto"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Deletes policy with provided id",
+                "tags": [
+                    "Policy"
+                ],
+                "summary": "Delete policy by id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Policy id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hse-revizor_rules-service_internal_pkg_router_dto.GetPolicyDto"
+                        }
+                    }
+                }
+            }
+        },
+        "/rule/{id}": {
+            "get": {
+                "description": "In success case returns rule model with provided id",
+                "tags": [
+                    "Rule"
+                ],
+                "summary": "Get rule by id",
                 "parameters": [
                     {
                         "type": "string",
                         "description": "Rule id input",
-                        "name": "ruleId",
-                        "in": "query",
+                        "name": "id",
+                        "in": "path",
                         "required": true
                     }
                 ],
@@ -37,24 +123,19 @@ const docTemplate = `{
                     }
                 }
             },
-            "put": {
-                "description": "In success case returns updated rule model",
-                "consumes": [
-                    "application/json"
-                ],
+            "delete": {
+                "description": "In success case delete rule model with provided id",
                 "tags": [
                     "Rule"
                 ],
-                "summary": "Update rule",
+                "summary": "Delete rule by id",
                 "parameters": [
                     {
-                        "description": "Rule input",
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/RuleUpdate"
-                        }
+                        "type": "string",
+                        "description": "Rule id input",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -62,9 +143,11 @@ const docTemplate = `{
                         "description": " "
                     }
                 }
-            },
+            }
+        },
+        "/rules": {
             "post": {
-                "description": "In success case returns created rule model",
+                "description": "In success case returns created rule model. Type must be equal (HasFile, HasStringInFile, HasExpectedValueInField, StrictEquality, HasSubstring, HasRegexMatch, NoSubstring, NotLongerThan, NotShorterThan, NotEmpty, DoesLLMSayThatRuleIsSatisfied)",
                 "consumes": [
                     "application/json"
                 ],
@@ -79,58 +162,12 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/RuleCreate"
+                            "$ref": "#/definitions/github_com_hse-revizor_rules-service_internal_pkg_router_dto.CreateRuleDto"
                         }
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": " "
-                    }
-                }
-            },
-            "delete": {
-                "description": "In success case returns deleted rule model",
-                "tags": [
-                    "Rule"
-                ],
-                "summary": "Delete rule",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Rule id input",
-                        "name": "ruleId",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": " "
-                    }
-                }
-            }
-        },
-        "/rules/all": {
-            "get": {
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Take",
-                        "name": "take",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Skip",
-                        "name": "skip",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
+                    "201": {
                         "description": " "
                     }
                 }
@@ -138,46 +175,53 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "RuleCreate": {
+        "github_com_hse-revizor_rules-service_internal_pkg_router_dto.CreatePolicyDto": {
             "type": "object",
+            "required": [
+                "projectId",
+                "rulesIds"
+            ],
             "properties": {
-                "filePath": {
+                "projectId": {
                     "type": "string"
                 },
-                "item": {
+                "rulesIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "github_com_hse-revizor_rules-service_internal_pkg_router_dto.CreateRuleDto": {
+            "type": "object",
+            "required": [
+                "params",
+                "typeId"
+            ],
+            "properties": {
+                "params": {
                     "type": "string"
                 },
-                "shouldBe": {
-                    "type": "string"
-                },
-                "type": {
-                    "type": "string"
-                },
-                "workspaceId": {
+                "typeId": {
                     "type": "string"
                 }
             }
         },
-        "RuleUpdate": {
+        "github_com_hse-revizor_rules-service_internal_pkg_router_dto.GetPolicyDto": {
             "type": "object",
             "properties": {
-                "filePath": {
-                    "type": "string"
-                },
                 "id": {
                     "type": "string"
                 },
-                "item": {
+                "projectId": {
                     "type": "string"
                 },
-                "shouldBe": {
-                    "type": "string"
-                },
-                "type": {
-                    "type": "string"
-                },
-                "workspaceId": {
-                    "type": "string"
+                "rulesIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 }
             }
         }

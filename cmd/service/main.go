@@ -1,11 +1,13 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/hse-revizor/rules-service/internal/di"
 	"github.com/hse-revizor/rules-service/internal/utils/config"
 	"github.com/hse-revizor/rules-service/internal/utils/flags"
 	"github.com/slipneff/gogger"
-	"github.com/slipneff/gogger/log"
+	goggerlog "github.com/slipneff/gogger/log"
 )
 
 // @title           Rules Service API
@@ -20,9 +22,14 @@ import (
 // @BasePath /api/v1
 func main() {
 	flags := flags.MustParseFlags()
-	cfg := config.MustLoadConfig(flags.EnvMode, flags.ConfigPath)
+	cfg := config.MustLoadConfig(flags.EnvMode)
 	container := di.New(cfg)
 	gogger.ConfigureZeroLogger()
-	log.Info("Service started")
-	container.GetRuleService()
+
+	goggerlog.Info(fmt.Sprintf("Server starting on %s:%d", cfg.Host, cfg.Port))
+
+	err := container.GetHttpServer().ListenAndServe()
+	if err != nil {
+		goggerlog.Panic(err, "Fail serve HTTP")
+	}
 }
