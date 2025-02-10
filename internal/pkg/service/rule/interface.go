@@ -14,9 +14,14 @@ type storage interface {
 	UpdateRule(context.Context, *models.Rule) (*models.Rule, error)
 	DeleteRule(context.Context, uuid.UUID) (*models.Rule, error)
 	GetAllRules(ctx context.Context, input sql.GetAllRulesPayload) (*sql.GetAllRulesOutput, error)
+
+	CreatePolicy(context.Context, *models.Policy) (*models.Policy, error)
+	FindPolicyById(context.Context, uuid.UUID) (*models.Policy, error)
+	DeletePolicy(context.Context, uuid.UUID) (*models.Policy, error)
 }
+
 type Service struct {
-	storage      storage
+	storage storage
 }
 
 func New(storage storage) *Service {

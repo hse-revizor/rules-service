@@ -13,18 +13,15 @@ import (
 )
 
 type CreateRule struct {
-	FilePath string
-	Value    string
-	Template string
+	Params models.Params
+	TypeId string
 }
+
 // @throws: ErrRuleNotFound, ErrRuleExists
 func (s *Service) CreateRule(ctx context.Context, input *CreateRule) (*models.Rule, error) {
 	created, err := s.storage.CreateRule(ctx, &models.Rule{
-		FilePath:     input.FilePath,
-		Value:        input.Value,
-		RuleTemplate: models.RuleTemplate(input.Template),
-
-		// RuleGroup: models.RuleGroup{},
+		TypeId: input.TypeId,
+		Params: input.Params,
 	})
 	if err != nil {
 		switch {

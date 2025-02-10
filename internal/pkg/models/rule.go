@@ -10,9 +10,9 @@ import (
 type Rule struct {
 	Id uuid.UUID `gorm:"primaryKey;column:id"`
 
-	RuleTemplate RuleTemplate `gorm:"column:rule_template"`
-	// RuleGroup    RuleGroup
-	Params    Params     `gorm:"column:params"`
+	TypeId string `gorm:"column:type_id"`
+	Params Params `gorm:"column:params"`
+
 	CreatedAt *time.Time `gorm:"column:created_at;autoCreateTime"`
 	UpdatedAt *time.Time `gorm:"column:updated_at;autoUpdateTime"`
 }

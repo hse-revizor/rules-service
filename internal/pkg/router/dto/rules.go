@@ -1,25 +1,23 @@
 package dto
 
 type GetRuleDto struct {
-    ID         string `json:"id"`
-    TemplateID string `json:"templateId"`
-    ApplyToURI string `json:"applyToURI"`
-    Value      string `json:"value"`
+	ID     string `json:"id"`
+	TypeId string `json:"typeId"`
+	Params string `json:"params"`
 }
 
 type CreateRuleDto struct {
-    TemplateID string `json:"templateId" binding:"required"`
-    ApplyToURI string `json:"applyToURI" binding:"required"`
-    Value      string `json:"value" binding:"required"`
+	TypeId string `json:"typeId" binding:"required"`
+	Params string `json:"params" binding:"required"`
 }
 
 type GetPolicyDto struct {
-    ID        string   `json:"id"`
-    ProjectID string   `json:"projectId"`
-    RulesIDs  []string `json:"rulesIds"`
+	ID        string   `json:"id"`
+	ProjectID string   `json:"projectId"`
+	RulesIDs  []string `json:"rulesIds"`
 }
 
 type CreatePolicyDto struct {
-    ProjectID string   `json:"projectId" binding:"required"`
-    RulesIDs  []string `json:"rulesIds" binding:"required"`
+	ProjectID string   `json:"projectId" binding:"required"`
+	RulesIDs  []string `json:"rulesIds" binding:"required"`
 }

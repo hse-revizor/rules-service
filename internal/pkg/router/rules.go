@@ -1,10 +1,12 @@
 package router
 
 import (
+	"encoding/json"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"github.com/hse-revizor/rules-service/internal/pkg/models"
 	"github.com/hse-revizor/rules-service/internal/pkg/router/dto"
 	"github.com/hse-revizor/rules-service/internal/pkg/service/rule"
 )
@@ -14,7 +16,7 @@ import (
 // @Tags Rule
 // @Accept json
 // @Param data body dto.CreateRuleDto true "Rule input"
-// @Success 200 "" ""
+// @Success 201 "" ""
 // @Router /rules [post]
 func (h *Handler) CreateRule(c *gin.Context) {
 	var req dto.CreateRuleDto
@@ -22,16 +24,22 @@ func (h *Handler) CreateRule(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+
+	var params models.Params
+	err := json.Unmarshal([]byte(req.Params), &params)
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err)
+		return
+	}
 	rule, err := h.service.CreateRule(c, &rule.CreateRule{
-		FilePath: req.ApplyToURI,
-		Value:    req.Value,
-		Template: req.TemplateID,
+		TypeId: req.TypeId,
+		Params: params,
 	})
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err)
 		return
 	}
-	responseOK(c, rule)
+	c.JSON(http.StatusCreated, rule)
 }
 
 // @Summary Get rule by id
@@ -54,6 +62,7 @@ func (h *Handler) GetRule(c *gin.Context) {
 	}
 	responseOK(c, rule)
 }
+
 // @Summary Delete rule by id
 // @Description In success case delete rule model with provided id
 // @Tags Rule

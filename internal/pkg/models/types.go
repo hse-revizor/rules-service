@@ -10,3 +10,7 @@ const (
 	RuleTemplate_StrictMatchesRegexTempl RuleTemplate = "StrictMatchesRegexTempl"
 	RuleTemplate_NonStrictMathTempl      RuleTemplate = "NonStrictMathTempl"
 )
+
+type Params struct {
+	RuleTemplate RuleTemplate `json:"ruleTemplate"`
+}

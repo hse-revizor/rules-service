@@ -31,6 +31,13 @@ func (h *Handler) InitRoutes() {
 			rules.GET("/:id", h.GetRule)
 			rules.DELETE("/:id", h.DeleteRule)
 		}
+
+		policies := router.Group("/policy")
+		{
+			policies.POST("", h.CreatePolicy)
+			policies.GET("/:id", h.GetPolicy)
+			policies.DELETE("/:id", h.DeletePolicy)
+		}
 	}
 	api.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 }
