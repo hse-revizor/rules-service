@@ -101,6 +101,34 @@ const docTemplate = `{
                 }
             }
         },
+        "/rule": {
+            "post": {
+                "description": "In success case returns created rule model. Type must be equal (HasFile, HasStringInFile, HasExpectedValueInField, StrictEquality, HasSubstring, HasRegexMatch, NoSubstring, NotLongerThan, NotShorterThan, NotEmpty, DoesLLMSayThatRuleIsSatisfied)",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Rule"
+                ],
+                "summary": "Create rule",
+                "parameters": [
+                    {
+                        "description": "Rule input",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_hse-revizor_rules-service_internal_pkg_router_dto.CreateRuleDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": " "
+                    }
+                }
+            }
+        },
         "/rule/{id}": {
             "get": {
                 "description": "In success case returns rule model with provided id",
@@ -140,34 +168,6 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": " "
-                    }
-                }
-            }
-        },
-        "/rules": {
-            "post": {
-                "description": "In success case returns created rule model. Type must be equal (HasFile, HasStringInFile, HasExpectedValueInField, StrictEquality, HasSubstring, HasRegexMatch, NoSubstring, NotLongerThan, NotShorterThan, NotEmpty, DoesLLMSayThatRuleIsSatisfied)",
-                "consumes": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Rule"
-                ],
-                "summary": "Create rule",
-                "parameters": [
-                    {
-                        "description": "Rule input",
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/github_com_hse-revizor_rules-service_internal_pkg_router_dto.CreateRuleDto"
-                        }
-                    }
-                ],
-                "responses": {
-                    "201": {
                         "description": " "
                     }
                 }

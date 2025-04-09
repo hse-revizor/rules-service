@@ -97,6 +97,26 @@ paths:
       summary: Get policy by id
       tags:
       - Policy
+  /rule:
+    post:
+      consumes:
+      - application/json
+      description: In success case returns created rule model. Type must be equal
+        (HasFile, HasStringInFile, HasExpectedValueInField, StrictEquality, HasSubstring,
+        HasRegexMatch, NoSubstring, NotLongerThan, NotShorterThan, NotEmpty, DoesLLMSayThatRuleIsSatisfied)
+      parameters:
+      - description: Rule input
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_hse-revizor_rules-service_internal_pkg_router_dto.CreateRuleDto'
+      responses:
+        "201":
+          description: ' '
+      summary: Create rule
+      tags:
+      - Rule
   /rule/{id}:
     delete:
       description: In success case delete rule model with provided id
@@ -124,26 +144,6 @@ paths:
         "200":
           description: ' '
       summary: Get rule by id
-      tags:
-      - Rule
-  /rules:
-    post:
-      consumes:
-      - application/json
-      description: In success case returns created rule model. Type must be equal
-        (HasFile, HasStringInFile, HasExpectedValueInField, StrictEquality, HasSubstring,
-        HasRegexMatch, NoSubstring, NotLongerThan, NotShorterThan, NotEmpty, DoesLLMSayThatRuleIsSatisfied)
-      parameters:
-      - description: Rule input
-        in: body
-        name: data
-        required: true
-        schema:
-          $ref: '#/definitions/github_com_hse-revizor_rules-service_internal_pkg_router_dto.CreateRuleDto'
-      responses:
-        "201":
-          description: ' '
-      summary: Create rule
       tags:
       - Rule
 swagger: "2.0"

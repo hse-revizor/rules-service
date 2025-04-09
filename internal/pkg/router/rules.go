@@ -17,7 +17,7 @@ import (
 // @Accept json
 // @Param data body dto.CreateRuleDto true "Rule input"
 // @Success 201 "" ""
-// @Router /rules [post]
+// @Router /rule [post]
 func (h *Handler) CreateRule(c *gin.Context) {
 	var req dto.CreateRuleDto
 	if err := c.ShouldBindJSON(&req); err != nil {

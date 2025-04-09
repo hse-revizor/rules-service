@@ -38,7 +38,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 	docs.SwaggerInfo.Title = "Projects Service API"
 	docs.SwaggerInfo.Description = "API Documentation"
 	docs.SwaggerInfo.Version = "1.0"
-	docs.SwaggerInfo.Host = "localhost:8787"
+	docs.SwaggerInfo.Host = "localhost:8788"
 	docs.SwaggerInfo.BasePath = "/api"
 	docs.SwaggerInfo.Schemes = []string{"http"}
 

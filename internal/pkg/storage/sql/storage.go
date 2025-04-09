@@ -46,7 +46,7 @@ func MustNewPostgresDB(cfg *config.Config) *gorm.DB {
 	if err != nil {
 		panic(err)
 	}
-	err = db.AutoMigrate(&models.Rule{})
+	err = db.AutoMigrate(&models.Rule{}, &models.Policy{})
 	if err != nil {
 		panic(err)
 	}
@@ -66,7 +66,7 @@ func MustNewSQLite(cfg *config.Config) *gorm.DB {
 	if err != nil {
 		panic(err)
 	}
-	err = db.AutoMigrate(&models.Rule{})
+	err = db.AutoMigrate(&models.Rule{}, &models.Policy{})
 
 	if err != nil {
 		panic(err)

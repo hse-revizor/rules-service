@@ -46,7 +46,7 @@ func LoadConfig(envMode string) (*Config, error) {
 	viper.AutomaticEnv()
 
 	// Set default values
-	viper.SetDefault("PORT", 8787)
+	viper.SetDefault("PORT", 8788)
 	viper.SetDefault("HOST", "localhost")
 	viper.SetDefault("DB_HOST", "localhost")
 	viper.SetDefault("DB_PORT", 5432)

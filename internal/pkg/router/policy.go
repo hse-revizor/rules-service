@@ -1,6 +1,7 @@
 package router
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -22,22 +23,27 @@ func (h *Handler) CreatePolicy(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+	rulesIDs := make([]models.StringStr, len(req.RulesIDs))
+	for i, id := range req.RulesIDs {
+		rulesIDs[i] = models.StringStr{Value: id}
+	}
 
 	policy := &models.Policy{
 		ProjectID: req.ProjectID,
-		RulesIDs:  req.RulesIDs,
+		RulesIDs:  rulesIDs,
 	}
 
 	createdPolicy, err := h.service.CreatePolicy(c, policy)
 	if err != nil {
+		fmt.Println(err)
 		newErrorResponse(c, http.StatusInternalServerError, err)
 		return
 	}
 
 	response := dto.GetPolicyDto{
-		ID:        createdPolicy.Id.String(),
+		ID:        createdPolicy.ID.String(),
 		ProjectID: createdPolicy.ProjectID,
-		RulesIDs:  createdPolicy.RulesIDs,
+		RulesIDs:  req.RulesIDs,
 	}
 
 	c.JSON(http.StatusCreated, response)
@@ -62,11 +68,15 @@ func (h *Handler) GetPolicy(c *gin.Context) {
 		newErrorResponse(c, http.StatusInternalServerError, err)
 		return
 	}
+	rulesIDs := make([]string, len(policy.RulesIDs))
+	for i, id := range policy.RulesIDs {
+		rulesIDs[i] = id.Value
+	}
 
 	response := dto.GetPolicyDto{
-		ID:        policy.Id.String(),
+		ID:        policy.ID.String(),
 		ProjectID: policy.ProjectID,
-		RulesIDs:  policy.RulesIDs,
+		RulesIDs:  rulesIDs,
 	}
 
 	responseOK(c, response)
@@ -91,11 +101,15 @@ func (h *Handler) DeletePolicy(c *gin.Context) {
 		newErrorResponse(c, http.StatusInternalServerError, err)
 		return
 	}
+	rulesIDs := make([]string, len(policy.RulesIDs))
+	for i, id := range policy.RulesIDs {
+		rulesIDs[i] = id.Value
+	}
 
 	response := dto.GetPolicyDto{
-		ID:        policy.Id.String(),
+		ID:        policy.ID.String(),
 		ProjectID: policy.ProjectID,
-		RulesIDs:  policy.RulesIDs,
+		RulesIDs:  rulesIDs,
 	}
 
 	responseOK(c, response)
